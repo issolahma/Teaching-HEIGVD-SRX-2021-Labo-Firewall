@@ -212,6 +212,7 @@ ping 192.168.200.3
 ---
 
 **LIVRABLE : capture d'écran de votre tentative de ping.**  
+
 ![ping docker](figures/ping-docker.png)
 ---
 
@@ -251,6 +252,7 @@ ping 192.168.100.3
 ---
 
 **LIVRABLES : captures d'écran des routes des deux machines et de votre nouvelle tentative de ping.**
+
 ![ping docker](figures/Ping_Serveur_Client.png)
 ---
 
@@ -268,6 +270,7 @@ Si votre ping passe mais que la réponse contient un _Redirect Host_, ceci indiq
 
 **LIVRABLE : capture d'écran de votre ping vers l'Internet. Un ping qui ne passe pas ou des réponses containant des _Redirect Host_ sont acceptés.**
 
+![ping to web](figures/no-ping-web.png)
 ---
 
 ### Configuration réseau du firewall
