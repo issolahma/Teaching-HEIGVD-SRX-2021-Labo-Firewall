@@ -272,8 +272,11 @@ ping 192.168.100.3
 **LIVRABLES : captures d'écran des routes des deux machines et de votre nouvelle tentative de ping.**
 
 ![ping srv-client](figures/Ping_Server_Client.png)
+
 ![route srv-client](figures/route-srv-client.png)
+
 ![route client-srv](figures/route-client-srv.png)
+
 ---
 
 La communication est maintenant possible entre les deux machines. Pourtant, si vous essayez de communiquer depuis le client ou le serveur vers l'Internet, ça ne devrait pas encore fonctionner sans une manipulation supplémentaire au niveau du firewall ou sans un service de redirection ICMP. Vous pouvez le vérifier avec un ping depuis le client ou le serveur vers une adresse Internet. 
@@ -368,7 +371,16 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+# LIVRABLE : Commandes iptables
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+# ping  LAN -> WAN/DMZ
+iptables -A FORWARD -s 192.168.100.0/24 -p icmp --icmp-type 8 -j ACCEPT
+iptables -A FORWARD -d 192.168.100.0/24 -p icmp --icmp-type 0 -j ACCEPT
+# ping DMZ -> LAN
+iptables -A FORWARD -d 192.168.100.0/24 -s 192.168.200.0/24 -p icmp --icmp-type 8 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -d 192.168.200.0/24 -p icmp --icmp-type 0 -j ACCEPT
 ```
 ---
 
