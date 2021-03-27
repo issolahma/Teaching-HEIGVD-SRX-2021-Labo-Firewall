@@ -125,15 +125,33 @@ _Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec
 
 **LIVRABLE : Remplir le tableau**
 
-| Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |
-| :---:             | :---:                  | :---:| :------: | :------: | :----: |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
+| Adresse IP source | Adresse IP destination |  Type  | Port src | Port dst | Action |
+| :---------------: | :--------------------: | :----: | :------: | :------: | :----: |
+|       tout        |          tout          |  any   |          |          |  Drop  |
+|       tout        |     interface WAN      |  UDP   |          |    53    | Accept |
+|   interface WAN   |          tout          |  UDP   |    53    |          | Accept |
+|       tout        |     interface WAN      |  TCP   |          |    53    | Accept |
+|   interface WAN   |          tout          |  TCP   |    53    |          | Accept |
+| 192.168.100.0/24  |     interface WAN      | ICMP-8 |          |          | Accept |
+|   interface WAN   |    192.168.100.0/24    | ICMP-0 |          |          | Accept |
+| 192.168.100.0/24  |    192.168.200.0/24    | ICMP-8 |          |          | Accept |
+| 192.168.200.0/24  |    192.168.100.0/24    | ICMP-0 |          |          | Accept |
+| 192.168.200.0/24  |    192.168.100.0/24    | ICMP-8 |          |          | Accept |
+| 192.168.100.0/24  |    192.168.200.0/24    | ICMP-0 |          |          | Accept |
+| 192.168.100.0/24  |     interface WAN      |  TCP   |          |    80    | Accept |
+|   interface WAN   |    192.168.100.0/24    |  TCP   |    80    |          | Accept |
+| 192.168.100.0/24  |     interface WAN      |  TCP   |          |   8080   | Accept |
+|   interface WAN   |    192.168.100.0/24    |  TCP   |   8080   |          | Accept |
+| 192.168.100.0/24  |     interface WAN      |  TCP   |          |   443    | Accept |
+|   interface WAN   |    192.168.100.0/24    |  TCP   |   443    |          | Accept |
+| 192.168.100.0/24  |     192.168.200.3      |  TCP   |          |    80    | Accept |
+|   192.168.200.3   |    192.168.100.0/24    |  TCP   |    80    |          | Accept |
+|   interface WAN   |     192.168.200.3      |  TCP   |          |    80    | Accept |
+|   192.168.200.3   |     interface WAN      |  TCP   |    80    |          | Accept |
+| 192.168.100.0/24  |     192.168.200.3      |  TCP   |          |    22    | Accept |
+|   192.168.200.3   |    192.168.100.0/24    |  TCP   |    22    |          |        |
+| 192.168.100.0/24  |     192.168.100.2      |  TCP   |          |    22    | Accept |
+|   192.168.100.2   |    192.168.100.0/24    |  TCP   |    22    |          | Accept |
 
 ---
 
@@ -361,14 +379,14 @@ LIVRABLE : Commandes iptables
 
 ```bash
 ping 8.8.8.8
-``` 	            
+```
 Faire une capture du ping.
 
 Vérifiez aussi la route entre votre client et le service `8.8.8.8`. Elle devrait partir de votre client et traverser votre Firewall :
 
 ```bash
 traceroute 8.8.8.8
-``` 	            
+```
 
 
 ---
