@@ -371,7 +371,16 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+# LIVRABLE : Commandes iptables
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+# ping  LAN -> WAN/DMZ
+iptables -A FORWARD -s 192.168.100.0/24 -p icmp --icmp-type 8 -j ACCEPT
+iptables -A FORWARD -d 192.168.100.0/24 -p icmp --icmp-type 0 -j ACCEPT
+# ping DMZ -> LAN
+iptables -A FORWARD -d 192.168.100.0/24 -s 192.168.200.0/24 -p icmp --icmp-type 8 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -d 192.168.200.0/24 -p icmp --icmp-type 0 -j ACCEPT
 ```
 ---
 
