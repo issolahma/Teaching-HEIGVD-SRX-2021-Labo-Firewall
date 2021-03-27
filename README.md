@@ -272,7 +272,7 @@ ping 192.168.100.3
 **LIVRABLES : captures d'écran des routes des deux machines et de votre nouvelle tentative de ping.**
 
 ![ping srv-client](figures/Ping_Server_Client.png)
-![route srv-client](figures/Proute-srv-client.png)
+![route srv-client](figures/route-srv-client.png)
 ![route client-srv](figures/route-client-srv.png)
 ---
 
