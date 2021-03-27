@@ -149,7 +149,7 @@ _Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec
 |   interface WAN   |     192.168.200.3      |  TCP   |          |    80    | Accept |
 |   192.168.200.3   |     interface WAN      |  TCP   |    80    |          | Accept |
 | 192.168.100.0/24  |     192.168.200.3      |  TCP   |          |    22    | Accept |
-|   192.168.200.3   |    192.168.100.0/24    |  TCP   |    22    |          |        |
+|   192.168.200.3   |    192.168.100.0/24    |  TCP   |    22    |          | Accept |
 | 192.168.100.0/24  |     192.168.100.2      |  TCP   |          |    22    | Accept |
 |   192.168.100.2   |    192.168.100.0/24    |  TCP   |    22    |          | Accept |
 
