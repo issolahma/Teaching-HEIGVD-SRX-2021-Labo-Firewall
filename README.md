@@ -406,6 +406,7 @@ traceroute 8.8.8.8
 ---
 **LIVRABLE : capture d'écran du traceroute et de votre ping vers l'Internet. Il ne devrait pas y avoir des _Redirect Host_ dans les réponses au ping !**
 ![ping cli-web](figures/ipt-ping-cli-web.png)
+
 ![route cli-web](figures/ipt-route-cli-web.png)
 
 ---
@@ -416,20 +417,20 @@ traceroute 8.8.8.8
 </ol>
 
 
-| De Client\_in\_LAN à | OK/KO | Commentaires et explications |
-| :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Client LAN           |       |                              |
-| Serveur WAN          |       |                              |
+| De Client\_in\_LAN à | OK/KO | Commentaires et explications                                 |
+| :------------------- | :---: | :----------------------------------------------------------- |
+| Interface DMZ du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
+| Interface LAN du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
+| Client LAN           |  OK   |                                                              |
+| Serveur WAN          |  OK   |                                                              |
 
 
-| De Server\_in\_DMZ à | OK/KO | Commentaires et explications |
-| :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Serveur DMZ          |       |                              |
-| Serveur WAN          |       |                              |
+| De Server\_in\_DMZ à | OK/KO | Commentaires et explications                                 |
+| :------------------- | :---: | :----------------------------------------------------------- |
+| Interface DMZ du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
+| Interface LAN du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
+| Serveur DMZ          |  OK   |                                                              |
+| Serveur WAN          |  OK   |                                                              |
 
 
 ## Règles pour le protocole DNS
