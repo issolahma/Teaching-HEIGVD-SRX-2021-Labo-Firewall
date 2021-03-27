@@ -4,6 +4,7 @@ services:
     firewall:
         privileged: true
         container_name : Firewall
+        hostname: Firewall
         build: .
         cap_add : 
             - NET_ADMIN 
@@ -23,6 +24,7 @@ services:
     client_in_lan:
         privileged: true
         container_name : Client_in_LAN
+        hostname : Client-LAN
         build: .
         cap_add : 
             - NET_ADMIN
@@ -42,6 +44,7 @@ services:
     server_in_dmz:
         privileged: true
         container_name : Server_in_DMZ
+        hostname : Server-DMZ
         build: .
         cap_add : 
             - NET_ADMIN
