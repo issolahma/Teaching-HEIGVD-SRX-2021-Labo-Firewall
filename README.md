@@ -291,7 +291,7 @@ Si votre ping passe mais que la réponse contient un _Redirect Host_, ceci indiq
 
 ---
 
-**LIVRABLE : capture d'écran de votre ping vers l'Internet. Un ping qui ne passe pas ou des réponses containant des _Redirect Host_ sont acceptés.**
+**LIVRABLE : capture d'écran de votre ping vers l'Internet. Un ping qui ne passe pas ou des réponses contenant des _Redirect Host_ sont acceptés.**
 
 ![ping to web](figures/no-ping-web.png)
 ---
@@ -337,7 +337,7 @@ Sauvegarder la configuration du firewall dans le fichier `iptables.conf` :
 iptables-save > iptables.conf
 ```
 
-Récuperer la config sauvegardée :
+Récupérer la config sauvegardée :
 
 ```bash
 iptables-restore < iptables.conf
@@ -459,7 +459,10 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+# LIVRABLE : Commandes iptables
+# DNS LAN
+iptables -A FORWARD -s 192.168.100.0/24 -p udp --dport 53 -j ACCEPT
+iptables -A FORWARD -d 192.168.100.0/24 -p udp --sport 53 -j ACCEPT
 ```
 
 ---
@@ -503,7 +506,15 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+# LIVRABLE : Commandes iptables
+# http LAN -> WAN/DMZ
+iptables -A FORWARD -s 192.168.100.0/24 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -p tcp --dport 8080 -j ACCEPT
+iptables -A FORWARD -d 192.168.100.0/24 -p tcp --sport 80 -j ACCEPT
+iptables -A FORWARD -d 192.168.100.0/24 -p tcp --sport 8080 -j ACCEPT
+# https LAN -> WAN/DMZ 
+iptables -A FORWARD -s 192.168.100.0/24 -p tcp --dport 443 -j ACCEPT
+iptables -A FORWARD -s 192.168.100.0/24 -p tcp --sport 443 -j ACCEPT
 ```
 
 ---
@@ -515,7 +526,13 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+# LIVRABLE : Commandes iptables
+# http/s -> DMZ que sur port 80
+iptables -A FORWARD -d 192.168.200.3 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -d 192.168.200.3 -p tcp -j DROP
+# http/s DMZ -> que via port 80
+iptables -A FORWARD -s 192.168.200.3 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -s 192.168.200.3 -p tcp -j DROP
 ```
 ---
 
@@ -527,6 +544,8 @@ LIVRABLE : Commandes iptables
 ---
 
 **LIVRABLE : capture d'écran.**
+<img src="figures/wget-LAN-DMZ.png" alt="wget cli-srv" style="zoom:67%;" />
+
 
 ---
 
@@ -543,7 +562,13 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+# LIVRABLE : Commandes iptables
+# ssh client -> srv
+iptables -A FORWARD -s 192.168.100.3 -d 192.168.200.3 -p tcp --dport 22 -j ACCEPT
+iptables -A FORWARD -d 192.168.100.3 -s 192.168.200.3 -p tcp --sport 22 -j ACCEPT
+# ssh client -> firewall
+iptables -A INPUT -s 192.168.100.3 -d 192.168.100.2 -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -d 192.168.100.3 -s 192.168.100.2 -p tcp --sport 22 -j ACCEPT
 ```
 
 ---
@@ -557,7 +582,7 @@ ssh root@192.168.200.3
 ---
 
 **LIVRABLE : capture d'écran de votre connexion ssh.**
-
+<img src="figures/ssh-cli-srv.png" alt="ssh cli-srv" style="zoom:67%;" />
 ---
 
 <ol type="a" start="9">
@@ -569,6 +594,8 @@ ssh root@192.168.200.3
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
+
+Les serveurs sont généralement regroupés dans des espaces spécifiques, hors des bureaux. Ils est donc bien plus simple de se connecter à distance, plutôt que se déplacer jusqu'aux serveurs. De plus, le pc de bureaux sont équipé de calvier/souris.
 
 ---
 
@@ -582,6 +609,8 @@ ssh root@192.168.200.3
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
+
+
 
 ---
 
