@@ -372,6 +372,7 @@ Commandes iptables :
 
 ```bash
 # LIVRABLE : Commandes iptables
+# Politiques DROP
 iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
@@ -450,7 +451,7 @@ ping www.google.com
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-
+![no ping google](figures/noPing-google.png)
 ---
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
@@ -476,7 +477,7 @@ iptables -A FORWARD -d 192.168.100.0/24 -p udp --sport 53 -j ACCEPT
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-
+![ping google](figures/ping-google.png)
 ---
 
 <ol type="a" start="6">
@@ -488,6 +489,8 @@ iptables -A FORWARD -d 192.168.100.0/24 -p udp --sport 53 -j ACCEPT
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
+
+Le nom d'hôte ne peut pas être résolu, donc ping ne connaît pas l'IP et ne peut pas faire son job.
 
 ---
 
@@ -509,13 +512,18 @@ Commandes iptables :
 ```bash
 # LIVRABLE : Commandes iptables
 # http LAN -> WAN/DMZ
-iptables -A FORWARD -s 192.168.100.0/24 -p tcp --dport 80 -j ACCEPT
-iptables -A FORWARD -s 192.168.100.0/24 -p tcp --dport 8080 -j ACCEPT
-iptables -A FORWARD -d 192.168.100.0/24 -p tcp --sport 80 -j ACCEPT
-iptables -A FORWARD -d 192.168.100.0/24 -p tcp --sport 8080 -j ACCEPT
+iptables -A FORWARD -m conntrack --ctstate NEW,RELATED,ESTABLISHED -s 192.168.100.0/24 -p tcp --dport 80 -j ACCEPT
+
+iptables -A FORWARD -m conntrack --ctstate NEW,RELATED,ESTABLISHED -s 192.168.100.0/24 -p tcp --dport 8080 -j ACCEPT
+
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -d 192.168.100.0/24 -p tcp --sport 80 -j ACCEPT
+
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -d 192.168.100.0/24 -p tcp --sport 8080 -j ACCEPT
+
 # https LAN -> WAN/DMZ 
-iptables -A FORWARD -s 192.168.100.0/24 -p tcp --dport 443 -j ACCEPT
-iptables -A FORWARD -s 192.168.100.0/24 -p tcp --sport 443 -j ACCEPT
+iptables -A FORWARD -m conntrack --ctstate NEW,RELATED,ESTABLISHED -s 192.168.100.0/24 -p tcp --dport 443 -j ACCEPT
+
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -d 192.168.100.0/24 -p tcp --sport 443 -j ACCEPT
 ```
 
 ---
@@ -529,11 +537,10 @@ Commandes iptables :
 ```bash
 # LIVRABLE : Commandes iptables
 # http/s -> DMZ que sur port 80
-iptables -A FORWARD -d 192.168.200.3 -p tcp --dport 80 -j ACCEPT
-iptables -A FORWARD -d 192.168.200.3 -p tcp -j DROP
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -d 192.168.200.3 -p tcp --dport 80 -j ACCEPT
+
 # http/s DMZ -> que via port 80
-iptables -A FORWARD -s 192.168.200.3 -p tcp --dport 80 -j ACCEPT
-iptables -A FORWARD -s 192.168.200.3 -p tcp -j DROP
+iptables -A FORWARD -m conntrack --ctstate NEW,RELATED,ESTABLISHED -s 192.168.200.3 -p tcp --dport 80 -j ACCEPT
 ```
 ---
 
@@ -545,7 +552,10 @@ iptables -A FORWARD -s 192.168.200.3 -p tcp -j DROP
 ---
 
 **LIVRABLE : capture d'écran.**
-<img src="figures/wget-LAN-DMZ.png" alt="wget cli-srv" style="zoom:67%;" />
+
+<img src="figures/wget-dmz-8080.png" alt="image-20210401111016489" style="zoom:67%;" />
+
+<img src="figures/wget-dmz-80.png" alt="image-20210401111104936" style="zoom:67%;" />
 
 
 ---
@@ -611,6 +621,10 @@ Les serveurs sont généralement regroupés dans des espaces spécifiques, hors 
 
 **LIVRABLE : Votre réponse ici...**
 
+Donner des autorisations spécifiques a des IP, plutôt que sur une plage d'adresse.
+
+Nous ne voulons pas forcement que toutes les machines d'un sous-réseau soient accessibles via ssh.
+
 
 
 ---
@@ -627,5 +641,7 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 ---
 
 **LIVRABLE : capture d'écran avec toutes vos règles.**
+
+![iptables](figures/iptables.png)
 
 ---
