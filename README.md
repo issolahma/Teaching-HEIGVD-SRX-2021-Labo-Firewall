@@ -421,18 +421,18 @@ traceroute 8.8.8.8
 
 | De Client\_in\_LAN à | OK/KO | Commentaires et explications                                 |
 | :------------------- | :---: | :----------------------------------------------------------- |
-| Interface DMZ du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
-| Interface LAN du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
+| Interface DMZ du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall. Bloqué par le firewall. |
+| Interface LAN du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall. Bloqué par le firewall. |
 | Client LAN           |  OK   |                                                              |
 | Serveur WAN          |  OK   |                                                              |
 
 
 | De Server\_in\_DMZ à | OK/KO | Commentaires et explications                                 |
 | :------------------- | :---: | :----------------------------------------------------------- |
-| Interface DMZ du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
-| Interface LAN du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall |
+| Interface DMZ du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall. Bloqué par le firewall. |
+| Interface LAN du FW  |  KO   | Il n'était pas demandé d'autoriser les ping de/vers le firewall. Bloqué par le firewall. |
 | Serveur DMZ          |  OK   |                                                              |
-| Serveur WAN          |  OK   |                                                              |
+| Serveur WAN          |  KO   | Bloqué par le firewall.                                      |
 
 
 ## Règles pour le protocole DNS
